@@ -1,0 +1,72 @@
+#add ability to exit
+stack:
+	env=dev
+	regions={{regions}}
+parallel:
+  /job/awsdeploy/orgadmin/ssm-parameter-org
+    cfparamValue={{org}}
+  /job/awsdeploy/orgadmin/ssm-parameter-domain
+    cfparamValue={{domain}}
+  /job/awsdeploy/orgadmin/ssm-parameter-domain
+    cfparamValue=:stack:regions
+sequential:
+	/job/awsdeloy/orgadmin/organizations-organization-:ssm:org
+		cfparamName=:ssm:org
+  /job/awsenvinit/orgadmin/organizations-organizationalunit-dev
+  	cfparamParentid=:get_id:organizations:organizationalunit:root
+parallel:
+  /job/awsenvinit/orgadmin/organizations-organizationalunit-governance
+  	cfparamParentid=:get_id:organizations:organizationalunit:dev
+  /job/awsenvinit/orgadmin/organizations-organizationalunit-apps
+    cfparamParentid=:get_id:organizations:organizationalunit:dev
+  /job/awsenvinit/orgadmin/organizations-organizationalunit-resources
+    cfparamParentid=:get_id:organizations:organizationalunit:dev
+parallel:
+  /job/awsenvinit/orgadmin/organizations-account-iam
+		cfparamParentIds=:get_id:organizations:organizationalunit:governance
+		cfparamDomain=:ssm:domain
+  	cfparamEnv=dev
+    cfparamOrg=:ssm:org
+  /job/awsenvinit/orgadmin/organizations-account-jobs
+    cfparamParentIds=:get_id:organizations:organizationalunit:apps
+    cfparamDomain=:ssm:domain
+		cfparamEnv=dev
+    cfparamOrg=:ssm:org
+  /job/awsenvinit/orgadmin/organizations-account-kms
+    cfparamParentIds=:get_id:organizations:organizationalunit:resources
+    cfparamDomain=:ssm:domain
+    cfparamEnv=dev
+    cfparamOrg=:ssm:org
+
+parallel:
+  /job/awsenvinit/orgadmin/iam-user-iamadmin
+   account=dev-iam
+  /job/awsenvinit/orgadmin/iam-user-kmsadmin
+    account=dev-iam
+  /job/awsenvinit/orgadmin/iam-user-orgadmin
+  	account=dev-iam
+	/job/awsenvinit/orgadmin/iam-group-iamadmingroup
+   account=dev-iam
+  /job/awsenvinit/orgadmin/iam-group-kmsadmingroup
+    account=dev-iam
+  /job/awsenvinit/orgadmin/iam-group-orgadmingroup
+    account=dev-iam
+parallel:
+  /job/awsenvinit/orgadmin/iam-role-iamadminrole
+    account=dev-iam
+  /job/awsenvinit/orgadmin/iam-role-kmsadminrole
+    account=dev-iam
+  /job/awsenvinit/orgadmin/iam-role-orgadminrole
+    account=dev-iam
+parallel:
+  /job/awsenvinit/orgadmin/iam-policy-iamadminrolepolicy
+   accounts=dev-iam
+  /job/awsenvinit/orgadmin/iam-policy-kmsadminrolepolicy
+    accounts=dev-iam
+  /job/awsenvinit/orgadmin/iam-policy-orgadminrolepolicy
+    accounts=dev-iam
+parallel:
+  /job/awsenvinit/orgadmin/kms-key-dev
+    accounts=dev-kms
+  /job/awsenvinit/orgadmin/kms-alias-dev
+    accounts=dev-kms

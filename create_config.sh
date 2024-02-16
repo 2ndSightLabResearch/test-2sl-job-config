@@ -22,20 +22,20 @@ if [ "$d" != "$BASE" ]; then
 
   echo -e "\nIt appears you may be executing this file from the repository"
   echo "directory. You need to execute it from the folder that contains"
-	echo "the four repositories. Would you like to copy this file to that"
-	echo "folder and execute it? (y)"
+  echo "the four repositories. Would you like to copy this file to that"
+  echo "folder and execute it? (y)"
   read y
 
   if [ "$y" == "y" ]; then
     cp $thisfile ..
     echo "File successfully copied. Changing to directory one level up."
     cd ..
-   	p=`basename "$PWD"`
+    p=`basename "$PWD"`
     if [ "$p" != "$BASE" ]; then 
-			echo "Error: the four repositories should be in a directory named $BASE not $p."
-			exit 1
-		fi
-		sh -c "./$thisfile"
+      echo "Error: the four repositories should be in a directory named $BASE not $p."
+      exit 1
+    fi
+    sh -c "./$thisfile"
   fi
   exit
 fi
@@ -190,7 +190,7 @@ while [ "$config" == "" ]; do echo "You must enter a configuration:"; read confi
       sed -i "s|{{$p}}|$v|g" $privateconfigfile
     fi
 
-	  parse=$(cat $privateconfigfile)
+    parse=$(cat $privateconfigfile)
 
  done
 

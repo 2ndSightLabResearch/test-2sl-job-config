@@ -41,15 +41,29 @@ if [ "$test" == "test" ]; then test="test-"; else test=""; fi
 
 PARENT_FOLDER=$test'2sl-job'
 if [ "$base" != $PARENT_FOLDER ]; then
-	echo "You need to clone the repositories into a folder named"
-	echo "$PARENT_FOLDER. Do you want to create that directory? (y)"
-	read y
-	if [ "$y" == "y" ]; then 
-		mkdir $PARENT_FOLDER
-		cd $PARENT_FOLDER
+  echo "You need to clone the repositories into a folder named"
+  echo "$PARENT_FOLDER. Do you want to create that directory? (y)"
+  read create
+  if [ "$create" == "y" ]; then
+    if [ -d $PARENT_FOLDER ]; then
+      echo "Parent folder $PARENT_FOLDER already exists."
+      echo "Do you want to delete it and everything in it it to proceed? (y for yes or enter to continue)"
+      read delete
+      if [ "$delete" == "y" ]; then
+        echo "Deleteing $PARENT_FOLDER ok? (Crtl-c to exit)"
+        read ok
+        rm -rf $PARENT_FOLDER
+      else
+        create="n"
+      fi
+    fi
+    if [ "$create" == "y" ]; then
+      mkdir $PARENT_FOLDER
+    fi
   fi
-	y=""
-fi 
+fi
+
+cd $PARENT_FOLDER
 
 REPO_CONFIG=$test'2sl-job-config'
 REPO_RESOURCES=$test'2sl-job-resources'
@@ -96,16 +110,13 @@ echo "organization and environment specific values."
 echo "Enter the URL for your private github repository:"
 read privaterepourl
 
-privaterepodir=$(echo $privaterepourl | cut -d "/" -f5 | sed -i "s|.git||")
+privaterepodir=$(echo $privaterepourl | cut -d "/" -f5 | sed "s|.git||")
 
 if [ ! -d $privaterepodir ]; then 
   git clone $privaterepourl
 fi
 
-echo "You now have the required code to configure jobs"
-echo 'To configure one now you can execute this script: '$REPO_CONFIG'/deploy_config.sh'
-echo "Would you like to do that now? (Enter to continue, cntrl-c to exit."
-deployconfig=$REPO_CONFIG'/deploy_config.sh'
-./$deployconfig
-
+echo "You now have the required code to configure jobs."
+echo 'To create a private configuration run this script: '$REPO_CONFIG'/create_config.sh'
+echo 'To deploy the configuration with an AWS Access Key stored in Secrets Manager run this script: '$REPO_CONFIG'/deploy_config.sh'
 

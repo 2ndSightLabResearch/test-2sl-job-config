@@ -1,0 +1,16 @@
+StackConfig:
+	env=root
+	account={{root AWS account id}}
+	region={{aws organizations region}}
+Sequential:
+	/job/awsdeploy/root/ssm-parameter-org
+		cfparamValue={{organization email domain}}
+	/job/awsdeploy/root/iam-user-{{organization admin username}}
+		cfparamUserName={{organization admin username}}
+		cfparamConsoleAccess=true
+	/job/awsdeploy/root/iam-managedpolicy-{{organization admin username}}permissionboundary
+	/job/awsdeploy/root/iam-userpolicy-{{organization admin username}}userpolicy
+	/job/awsdeploy/root/role-iam-orgadminrole
+		cfparamUserName={{organization admin username}}
+	/job/awsdeploy/root/iam-rolepolicy-orgadminrolepolicy
+

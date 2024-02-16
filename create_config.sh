@@ -1,11 +1,9 @@
 #/bin/bash -e
 # https://github.com/2slresearch/2sl-job-config
-# /aws/deploy_config.sh
+# create_config.sh
 # author: @teriradichel @2ndsightlab
-# Description: Deploy a job configuration to 
-# AWS SSM Parameter Store
-#
-# See README.md for more information
+# Description: Create a job configuration and 
+# store it in a private repository
 ##############################################################
 
 d=`basename "$PWD"`

@@ -4,8 +4,6 @@
 # author: @teriradichel @2ndsightlab
 # Description: Deploy a job configuration to 
 # AWS SSM Parameter Store
-#
-# See README.md for more information
 ##############################################################
 
 d=`basename "$PWD"`

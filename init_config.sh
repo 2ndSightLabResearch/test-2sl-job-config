@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # https://github.com/2ndSightLabResearch/2sl-job-exec
-# /init_config.sh
+# init_config.sh
 # author: @tradichel @2ndsightlab
 # Description: Download the code required to deploy a
 # job configuration to an SSM Parameter for the 

@@ -144,9 +144,9 @@ while [ "$config" == "" ]; do echo "You must enter a configuration:"; read confi
 ####################### 
 
  if [ -f $privateconfigfile ]; then 
-		echo "The file $privateconfigfile already exists. Do you want to overwrite it? (y)"
+    echo "The file $privateconfigfile already exists. Do you want to overwrite it? (y)"
     read y
-		if [ "$y" != "y" ]; then exit; fi
+    if [ "$y" != "y" ]; then exit; fi
  fi
 
  #create the directories if they do not already exist
@@ -155,15 +155,15 @@ while [ "$config" == "" ]; do echo "You must enter a configuration:"; read confi
  fi
 
   #copy the file to the new repo
-	cp "$configfile" "$privateconfigfile"
+  cp "$configfile" "$privateconfigfile"
 
 ####################### 
 # REPLACE PLACEHOLDERS IN DOUBLE BRACES {{ }}
 # WITH ENVIRONMENT SPECIFIC VALUES
 ####################### 
   
-	#if there was a placeholder in the file name,
-	#replace any instances in the file
+  #if there was a placeholder in the file name,
+  #replace any instances in the file
   sed -i "s|{{$p}}|$v|g" $privateconfigfile
 
   parse=$(cat $privateconfigfile)
@@ -180,15 +180,15 @@ while [ "$config" == "" ]; do echo "You must enter a configuration:"; read confi
       v=$(get_account_id)
     else
       echo "Enter a value for: $p"
-			read v
+      read v
     fi
 	
     echo "$p=$v"
 
-		#replace placeholder
-		if [ "$p" != "" ]; then
-			sed -i "s|{{$p}}|$v|g" $privateconfigfile
-	  fi
+    #replace placeholder
+    if [ "$p" != "" ]; then
+      sed -i "s|{{$p}}|$v|g" $privateconfigfile
+    fi
 
 	  parse=$(cat $privateconfigfile)
 
@@ -217,7 +217,7 @@ while [ "$config" == "" ]; do echo "You must enter a configuration:"; read confi
  exit
 
 else
-	echo "Warning: configuration in SSM Parameter store may not match GitHub configuration repository."
+  echo "Warning: configuration in SSM Parameter store may not match GitHub configuration repository."
 fi
 
 

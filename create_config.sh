@@ -71,8 +71,8 @@ fi
 configrepo=$BASE'-config'
 configdir=$configrepo'/job/'
 
-source $BASE-exec/aws/shared/functions.sh
-source $BASE-exec/aws/shared/validate.sh
+source $BASE-resources/aws/shared/functions.sh
+source $BASE-resources/aws/shared/validate.sh
 
 ####################### 
 # WALK THE CONFIG DIR TO GET CONFIG TO DEPLOY

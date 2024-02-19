@@ -28,10 +28,10 @@ if [ "$d" != "$BASE" ]; then
     cd ..
    	p=`basename "$PWD"`
     if [ "$p" != "$BASE" ]; then 
-			echo "Error: the four repositories should be in a directory named $BASE not $p."
-			exit 1
-		fi
-		sh -c "./deploy_config.sh"
+      echo "Error: the four repositories should be in a directory named $BASE not $p."
+      exit 1
+    fi
+    sh -c "./deploy_config.sh"
   fi
   exit
 fi
@@ -56,11 +56,14 @@ fi
 ####################### 
 # SET DIRECTORIES AND SOURCE REQUIRED FILES
 ####################### 
-configrepo=$BASE'-config'
-configdir=$configrepo'/job/'
+echo "Available repos:"
+ls | grep -v "2sl-job" | grep -v ".sh"
+echo "Enter private repo name:"
+read privaterepo
+configdir=$privaterepo'/job/'
 
-source $BASE-exec/aws/shared/functions.sh
-source $BASE-exec/aws/shared/validate.sh
+source $BASE-resources/aws/shared/functions.sh
+source $BASE-resources/aws/shared/validate.sh
 
 ####################### 
 # WALK THE CONFIG DIR TO GET CONFIG TO DEPLOY
@@ -92,6 +95,8 @@ echo -e "\nEnter configuration:"
 read config
 while [ "$config" == "" ]; do echo "You must enter a configuration:"; read config; done
  
+ssmparam=/$configdir$job'/'$role'/'$config
+
 ####################### 
 # DEPLOY THE SSM PARAMETER
 ####################### 
@@ -101,7 +106,7 @@ while [ "$config" == "" ]; do echo "You must enter a configuration:"; read confi
 
  if [ "$y" == "y" ]; then
   source $BASE-resources/aws/resources/ssm/parameter/parameter_functions.sh
-  set_ssm_parameter_job_config $ssmparam $privaterepo
+  set_ssm_parameter_job_config "$ssmparam"
  fi
 
 
